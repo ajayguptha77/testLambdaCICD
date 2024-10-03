@@ -1,29 +1,28 @@
-name: Deploy Lambda Function
+name: Lambda CI/CD
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v2
-      
-      - name: Install zip tool
-        uses: montudor/action-zip@v1
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: Create Zip file for Lambda function
-        run: zip -r code.zip .
+      - name: Install AWS CLI
+        run: |
+          sudo apt-get install unzip
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
 
-      - name: AWS CLI v2
-        uses: imehedi/actions-awscli-v2@latest
-        with:
-          args: "lambda update-function-code \
-            --function-name arn:aws:lambda:ap-south-1:030448577173:function:TestLambdaFunction \
-            --zip-file fileb://code.zip"
+      - name: Update Lambda Function
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: "ap-south-1"
+          AWS_DEFAULT_REGION: 'ap-south-1'
+        run: |
+          aws lambda update-function-code --function-name arn:aws:lambda:ap-south-1:030448577173:function:TestLambdaFunction --zip-file fileb://code.zip
