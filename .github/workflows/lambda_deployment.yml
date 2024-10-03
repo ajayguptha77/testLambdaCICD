@@ -16,7 +16,7 @@ jobs:
         run: sudo apt-get install zip
 
       - name: Zip Lambda function code
-        run: zip -r code.zip testLambdaCICD/*  # Ensure this is the correct path to your Lambda function code
+        run: zip -r code.zip TestLambdaFunction/*  # Ensure this is the correct path to your Lambda function code
 
       - name: Install AWS CLI (Update if preinstalled)
         run: |
