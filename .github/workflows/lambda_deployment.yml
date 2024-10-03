@@ -16,7 +16,7 @@ jobs:
         run: sudo apt-get install zip
 
       - name: Create Zip file for Lambda function
-        run: zip -r code.zip LAMBDA/*
+        run: zip -r code.zip testLambdaCICD/src/*
 
       - name: AWS CLI v2
         uses: imehedi/actions-awscli-v2@latest
