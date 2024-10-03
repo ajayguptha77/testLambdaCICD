@@ -12,6 +12,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Install zip tool
+        run: sudo apt-get install zip
+
+      - name: Zip Lambda function code
+        run: zip -r code.zip testLambdaCICD/*  # Ensure this is the correct path to your Lambda function code
+
       - name: Install AWS CLI (Update if preinstalled)
         run: |
           sudo apt-get install unzip
